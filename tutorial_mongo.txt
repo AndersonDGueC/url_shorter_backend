@@ -1,0 +1,15 @@
+Tutorial Mongo
+1.Login with your credential to mongodb 
+2. create cluster and give permission access create user and
+password
+3. the cluster take 5 min in be done
+4.the free option just you can 512MB of storage
+5. select in option cluster database left windows in later click
+in Browser collection, generate database and collection
+in this project was database=session and collection=urlshortner
+6 later conection and option url for application,
+add in project file named .env to add enviorment variable of
+project.
+7. view modify code in real time, rewrite line start in package json
+with node index.js(in this cases) by node --watch index.js
+or install package nodemon.

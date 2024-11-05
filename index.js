@@ -74,8 +74,21 @@ app.post("/api/shorturl", (req, res)=>{
       }
       //We have a valid URL
       else{
-        let original_url=urlObj.href;
-        let short_url=1;
+         let original_url=urlObj.href;
+        // Check that URL does not already exist in database.
+       
+        URLModel.findOne({original_url:original_url}).then(
+          (foundURL)=>{
+            if(foundURL){
+              res.json({
+                original_url:foundURL.original_url,
+                short_url:foundURL.short_url
+              })
+            }
+            //if URL does not exist create a new short url
+            //add it to database
+            else{
+              let short_url=1;
         //Get the latest short_url
         URLModel.find({}).sort(
           {short_url:"desc"}).limit(1).then(
@@ -95,6 +108,13 @@ app.post("/api/shorturl", (req, res)=>{
         res.json(resObj)  
             }
           )
+            }
+          }
+        )
+
+
+        
+        
       }
     })
   }
@@ -108,16 +128,20 @@ app.post("/api/shorturl", (req, res)=>{
 )
 
 app.get("/api/shorturl/:short_url",(req,res)=>{
-  let short_url=req.params.url;
+  let short_url=req.params.short_url;
+  console.log(short_url);
   //Find the original url from database
   URLModel.findOne({short_url:short_url}).then((foundURL)=>{
     console.log(foundURL);
     if(foundURL){
-      let original_url=foundURL.original_url;
-      res.direct(original_url);
+      
+    let original_url=foundURL.original_url;
+    res.redirect(original_url)
     }
-    else{
-      res.json({message:"The short url does not exist!"})
+      //If URL does not exist create a new short url and
+      //add it to the database
+    else{ 
+      res.json({message: "The short url does not exist!"})
     }
   })
 })
